@@ -4,48 +4,72 @@ import numpy as np
 
 app = Flask(__name__)
 
-# Load trained model
-model = pickle.load(open('model.pkl', 'rb'))
+# =========================
+# Load Model
+# =========================
+
+model = pickle.load(open('carbon_model.pkl', 'rb'))
 
 # =========================
-# Home Page
+# Home
 # =========================
+
 @app.route('/')
 def home():
     return render_template('index.html')
 
 # =========================
-# Prediction Route
+# Predict
 # =========================
+
 @app.route('/predict', methods=['POST'])
 def predict():
 
     try:
 
-        sp = float(request.form['sp'])
-        strength = float(request.form['strength'])
-        co2 = float(request.form['co2'])
-        durability = float(request.form['durability'])
+        cement = float(request.form['cement'])
 
-        features = np.array([[sp, strength, co2, durability]])
+        water = float(request.form['water'])
+
+        fa = float(request.form['fa'])
+
+        ggbfs = float(request.form['ggbfs'])
+
+        sf = float(request.form['sf'])
+
+        sp = float(request.form['sp'])
+
+        ca = float(request.form['ca'])
+
+        features = np.array([
+            [
+                cement,
+                water,
+                fa,
+                ggbfs,
+                sf,
+                sp,
+                ca
+            ]
+        ])
 
         prediction = model.predict(features)
 
-        sustainability = round(prediction[0], 4)
+        carbon = round(prediction[0], 2)
 
         # Category
-        if sustainability < 0.08:
-            category = "Poor"
+        if carbon < 300:
+            category = "Low Carbon Mix"
 
-        elif sustainability < 0.12:
-            category = "Moderate"
+        elif carbon < 400:
+            category = "Moderate Carbon Mix"
 
         else:
-            category = "Excellent"
+            category = "High Carbon Mix"
 
         return render_template(
             'index.html',
-            prediction_text=f'Sustainability Index: {sustainability}',
+            prediction_text=f'Predicted Carbon Footprint: {carbon} kg/m³',
             category=category
         )
 
@@ -57,7 +81,8 @@ def predict():
         )
 
 # =========================
-# Run App
+# Run
 # =========================
+
 if __name__ == '__main__':
     app.run(debug=True)
