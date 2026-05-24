@@ -1,14 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
 
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Sustainability Prediction Model</title>
+    <title>Carbon Footprint Prediction</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='style.css') }}">
@@ -17,51 +12,69 @@
 
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <h1>Sustainability Prediction Model</h1>
+    <h1>Carbon Footprint Prediction Model</h1>
 
-        <form action="/predict" method="POST">
+    <form action="/predict" method="POST">
 
-            <input type="number"
-                   step="any"
-                   name="sp"
-                   placeholder="SP (%)"
-                   required>
+        <input type="number"
+               step="any"
+               name="cement"
+               placeholder="Cement (kg/m³)"
+               required>
 
-            <input type="number"
-                   step="any"
-                   name="strength"
-                   placeholder="Strength (MPa)"
-                   required>
+        <input type="number"
+               step="any"
+               name="water"
+               placeholder="Water (kg/m³)"
+               required>
 
-            <input type="number"
-                   step="any"
-                   name="co2"
-                   placeholder="CO2 (kg/m³)"
-                   required>
+        <input type="number"
+               step="any"
+               name="fa"
+               placeholder="Fly Ash (kg/m³)"
+               required>
 
-            <input type="number"
-                   step="any"
-                   name="durability"
-                   placeholder="Durability"
-                   required>
+        <input type="number"
+               step="any"
+               name="ggbfs"
+               placeholder="GGBFS (kg/m³)"
+               required>
 
-            <button type="submit">
-                Predict Sustainability
-            </button>
+        <input type="number"
+               step="any"
+               name="sf"
+               placeholder="Silica Fume (kg/m³)"
+               required>
 
-        </form>
+        <input type="number"
+               step="any"
+               name="sp"
+               placeholder="SP (%)"
+               required>
 
-        {% if prediction_text %}
+        <input type="number"
+               step="any"
+               name="ca"
+               placeholder="Coarse Aggregate (kg/m³)"
+               required>
 
-            <h2>{{ prediction_text }}</h2>
+        <button type="submit">
+            Predict Carbon Footprint
+        </button>
 
-            <h3>Category: {{ category }}</h3>
+    </form>
 
-        {% endif %}
+    {% if prediction_text %}
 
-    </div>
+        <h2>{{ prediction_text }}</h2>
+
+        <h3>{{ category }}</h3>
+
+    {% endif %}
+
+</div>
 
 </body>
 </html>
