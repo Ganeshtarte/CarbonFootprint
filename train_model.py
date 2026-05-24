@@ -3,7 +3,6 @@ import pickle
 
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import r2_score, mean_absolute_error
 
 # =========================
 # Load Dataset
@@ -20,8 +19,8 @@ X = df[
         'Cement (kg/m³)',
         'Water (kg/m³)',
         'FA (kg/m³)',
-        'GGBFS (kg/m³)',
-        'SF (kg/m³)',
+        'GGBS (%)',
+        'Silica Fume (%)',
         'SP (%)',
         'CA (kg/m³)'
     ]
@@ -45,7 +44,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 
 # =========================
-# Model
+# Random Forest Model
 # =========================
 
 model = RandomForestRegressor(
@@ -54,29 +53,10 @@ model = RandomForestRegressor(
 )
 
 # =========================
-# Train Model
+# Train
 # =========================
 
 model.fit(X_train, y_train)
-
-# =========================
-# Prediction
-# =========================
-
-y_pred = model.predict(X_test)
-
-# =========================
-# Accuracy
-# =========================
-
-r2 = r2_score(y_test, y_pred)
-
-mae = mean_absolute_error(y_test, y_pred)
-
-print("\nModel Performance")
-print("----------------------")
-print("R2 Score :", r2)
-print("MAE      :", mae)
 
 # =========================
 # Save Model
@@ -84,4 +64,4 @@ print("MAE      :", mae)
 
 pickle.dump(model, open('carbon_model.pkl', 'wb'))
 
-print("\nCarbon Model saved successfully")
+print("Carbon Footprint Model Saved Successfully")
