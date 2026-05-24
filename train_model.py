@@ -11,39 +11,27 @@ from sklearn.metrics import r2_score, mean_absolute_error
 
 df = pd.read_excel('sustainability.xlsx')
 
-print(df.head())
-
-# =========================
-# Convert Strength Ranges
-# =========================
-
-def convert_strength(value):
-
-    if isinstance(value, str):
-
-        if '–' in value:
-            parts = value.split('–')
-            return (float(parts[0]) + float(parts[1])) / 2
-
-        elif '-' in value:
-            parts = value.split('-')
-            return (float(parts[0]) + float(parts[1])) / 2
-
-    return float(value)
-
-df['Strength (MPa)'] = df['Strength (MPa)'].apply(convert_strength)
-
 # =========================
 # Features
 # =========================
 
-X = df[['SP (%)', 'Strength (MPa)', 'CO₂ (kg/m³)', 'Durability']]
+X = df[
+    [
+        'Cement (kg/m³)',
+        'Water (kg/m³)',
+        'FA (kg/m³)',
+        'GGBFS (kg/m³)',
+        'SF (kg/m³)',
+        'SP (%)',
+        'CA (kg/m³)'
+    ]
+]
 
 # =========================
 # Target
 # =========================
 
-y = df['Sustainability']
+y = df['CO₂ (kg/m³)']
 
 # =========================
 # Train Test Split
@@ -66,13 +54,13 @@ model = RandomForestRegressor(
 )
 
 # =========================
-# Train
+# Train Model
 # =========================
 
 model.fit(X_train, y_train)
 
 # =========================
-# Predict
+# Prediction
 # =========================
 
 y_pred = model.predict(X_test)
@@ -82,6 +70,7 @@ y_pred = model.predict(X_test)
 # =========================
 
 r2 = r2_score(y_test, y_pred)
+
 mae = mean_absolute_error(y_test, y_pred)
 
 print("\nModel Performance")
@@ -93,6 +82,6 @@ print("MAE      :", mae)
 # Save Model
 # =========================
 
-pickle.dump(model, open('model.pkl', 'wb'))
+pickle.dump(model, open('carbon_model.pkl', 'wb'))
 
-print("\nModel saved as model.pkl")
+print("\nCarbon Model saved successfully")
